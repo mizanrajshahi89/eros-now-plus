@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Play, Star } from "lucide-react";
+import { usePlayer } from "@/contexts/PlayerContext";
 import type { ContentItem } from "@/data/content";
 
 const ContentCard = ({ item }: { item: ContentItem }) => {
   const [hovered, setHovered] = useState(false);
+  const { openPlayer } = usePlayer();
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => openPlayer(item)}
       className="flex-shrink-0 w-[160px] md:w-[220px] lg:w-[260px] cursor-pointer group/card"
     >
       <div className="relative aspect-video rounded-md overflow-hidden bg-surface transition-transform duration-200 group-hover/card:scale-105">
@@ -20,21 +23,17 @@ const ContentCard = ({ item }: { item: ContentItem }) => {
         />
         <div className="absolute inset-0 gradient-card-overlay opacity-0 group-hover/card:opacity-100 transition-opacity" />
 
-        {/* VIP Badge */}
         {item.isVip && (
           <span className="absolute top-2 left-2 bg-gold text-accent-foreground text-[10px] font-body font-bold px-2 py-0.5 rounded">
             VIP
           </span>
         )}
-
-        {/* New Badge */}
         {item.isNew && (
           <span className="absolute top-2 right-2 bg-primary text-primary-foreground text-[10px] font-body font-bold px-2 py-0.5 rounded">
             NEW
           </span>
         )}
 
-        {/* Play on hover */}
         {hovered && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="bg-primary/90 rounded-full p-3">
